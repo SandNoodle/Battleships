@@ -28,7 +28,7 @@ Bazując na zasadach gry **Battleships**, zaimplementuj program, który losowo u
 *  Statki umieszczane są na planszach o rozmiarze **10 x 10** kratek.
 *  Statki położone mogą być w kierunku poziomym bądź pionowym - bez skosów.
 *  Statki nie mogą się pokrywać, ale mogą być umieszczone obok siebie.
-*  Po przyjęciu początkowych pozycji gracze naprzemiennie ogłaszają w którą kratkę oponenta strzelają. Oponent ma obowiązek ogłosić rezultat strzału: **Hit, Miss, Sunk**.
+*  Po przyjęciu początkowych pozycji gracze naprzemiennie ogłaszają, w którą kratkę oponenta strzelają. Oponent ma obowiązek ogłosić rezultat strzału: **Hit, Miss, Sunk**.
 *  Statek zostaje zatopionym w momencie, gdy trafione zostaną jego wszystkie kratki, które okupuje.
 *  Wygrywa ten gracz, który jako pierwszy zniszczy wszystkie statki przeciwnika.
 *  Każdy z graczy ma do dyspozycji dwie plansze - własną oraz tzw. "firing board", gdzie zapisuje wyniki strzałów w przeciwnika.
@@ -37,10 +37,10 @@ Bazując na zasadach gry **Battleships**, zaimplementuj program, który losowo u
 
 Dodatkowo do podstawowych zasad gry rozwinięto program o nastepujące założenia:
 
-* Zaimplementowano interfejs **IPlayer**, który umożliwia tworzenie nowych graczy wraz z ich AI (Więcej informacji w sekcji Gracze).
-* Każdy z graczy uczestniczy w turnieju w stylu [Double Round Robin](http://www.oxfordcroquet.com/manage/doubleroundrobin/index.asp) - ze względu na przewagę pierwszego ruchu, każdy z graczy walczy z oponentnem dwukrotnie, gdzie raz atakuje, a raz broni jako pierwszy.
+* Zaimplementowano interfejs **IPlayer**, który umożliwia tworzenie nowych graczy wraz z ich AI (więcej informacji w sekcji Gracze).
+* Każdy z graczy uczestniczy w turnieju w stylu [Double Round Robin](http://www.oxfordcroquet.com/manage/doubleroundrobin/index.asp) - ze względu na przewagę pierwszego ruchu, każdy z graczy walczy z oponentem dwukrotnie, gdzie raz atakuje, a raz broni jako pierwszy.
 * Jeden mecz składa się z **1000** rund - runda kończy się w momencie wygranej któregokolwiek zawodnika (oraz przyznaniem mu punktu).
-* Pod koniec turnieju wszystkie punkty zostają sumowane oraz przedstawiana jest tabela z wynikami.
+* Pod koniec turnieju wszystkie punkty zostają zsumowane oraz przedstawiana jest tabela z wynikami.
 * Gracze nie mają możliwości własnoręcznie ustawiać statków - ze względu na **Cel ćwiczenia**, Arbiter odpowiada za losowe ich ustawienie za graczy.
 
 ## Gracze
@@ -50,16 +50,16 @@ Utworzenie interfejsu **IPlayer** jest umotywowane chęcią eksperymentowania na
 Udostępnia on metody odpowiedzialne za przechowywanie statków oraz plansz wraz z metodami umożliwiającymi przeprowadzenie gry (funkcje oddawania strzału i jego rezultatu czy otrzymywania informacji o strzale przeciwnika).
 
 Zdefiniowano następujących graczy (wraz z opisem ich taktyki):
-* **Random Player** - strzela on losowo we wszystkie kratki, nawet te które już sprawdził. Jest to taktyka z najmniejszym potencjałem wygranej w której mecz w najgorszym wypadku skończy się po czasie **O(inf)** (Istnieje prawdopodobieństwo, że algorytm wybierze po prostu jedno pole w które tylko i wyłacznie będzie strzelał).
-* **Random Player Without Repetition** - udoskonalenie powyższego gracza, objawiające się tym, że mimo losowego oddawania strzałów mecz ma gwarancję zakończenia w **O(n)** ruchów, gdzie **n** jest równe ilości kratek do sprawdzenia (w przypadku planszy 10x10 w najgorszym wypadku gra skończy się po 100 ruchach). Gwarantowane jest nie powtarzanie strzałów w już zweryfikowane pola.
-* **Simple Player** - przejawia on taktykę przeciętnego ludzkiego gracza w statki. Posiada on dwa stany:
-	- W pierwszej kolejności oddaje strzały w sąsiadów (góra, dół, lewo, prawo) od pól w którym nastąpiło trafienie.
+* **Random Player** - strzela on losowo we wszystkie kratki, nawet te które już sprawdził. Jest to taktyka z najmniejszym potencjałem wygranej, w której mecz w najgorszym wypadku skończy się po czasie **O(inf)** (istnieje prawdopodobieństwo, że algorytm wybierze po prostu jedno pole, w które tylko i wyłacznie będzie strzelał).
+* **Random Player Without Repetition** - udoskonalenie powyższego gracza objawiające się tym, że mimo losowego oddawania strzałów mecz ma gwarancję zakończenia w **O(n)** ruchów, gdzie **n** jest równe ilości kratek do sprawdzenia (w przypadku planszy 10x10 w najgorszym wypadku gra skończy się po 100 ruchach). Gwarantowane jest nie powtarzanie strzałów w już zweryfikowane pola.
+* **Simple Player** - przejawia on taktykę przeciętnego ludzkiego gracza w statki. Posiada dwa stany:
+	- W pierwszej kolejności oddaje strzały w sąsiadów (góra, dół, lewo, prawo) od pól, w które nastąpiło trafienie.
 	- Wybiera losowe niesprawdzone pole w które oddaje strzał.
 
 ## Arbiter
 
 Znajdujący się w klasie **Game** odpowiada za następujące elementy:
-* Przeprowadza on turniej w stylu **Double Round Robin** (Wraz ze specyfikowanymi zasadami gry (długości statków, wielkość planszy, liczba rund na mecz)) - funkcja **playTournament**.
+* Przeprowadza on turniej w stylu **Double Round Robin** wraz ze specyfikowanymi zasadami gry (długości statków, wielkość planszy, liczba rund na mecz) - funkcja **playTournament**.
 * Tworzy mecz między dwoma graczami i nadzoruje liczbę wygranych przez nich rund - funkcja **playMatch**.
 * Odpowiada za nadzorowanie zasad gry (ruchy graczy) i przekazywanie im informacji - stanowi on pośrednika między oponentami - funkcja **playRound**.
 * Losowo umieszcza statki dla obu graczy rozgrywających rundę - funkcja **placeShipsForPlayers**.
@@ -69,7 +69,7 @@ Rozmieszczenie statków opiera się na następujących zasadach:
 1. Wybierz losowy punkt wewnątrz planszy, np. (4, 3)
 2. Wybierz losowy kierunek statku (Pionowy bądź Poziomy), np. (Poziomy).
 3. Wygeneruj potencjalne kratki okupowane przez nowy statek (długości N) w danym kierunku.
-4. Zweryfikuj czy nowy statek okupowałby miejsce zajęte przez inny statek  
+4. Zweryfikuj, czy nowy statek okupowałby miejsce zajęte przez inny statek  
    - **Tak**: Wróć do punktu **pierwszego** - losuj potencjalne miejsce na nowo.
    - **Nie**: Dodaj go do listy położonych statków i zaktualizuj listę okupowanych pól.
 5. Gdy wygenerowano wszystkie statki - zwróć ich listę graczowi.
@@ -94,7 +94,7 @@ Klasa ta udostepnia tylko dwie metody: **BoardSize** (**get**) oraz **CellStatus
 
 ## Słowem wstępu:
 
-Frontend został wykonany przy użyciu **React** oraz stylizowany za pomocą **TailwindCSS** (Niedawno framework ten przykuł moje oko i od tego czasu poszukiwałem pretekstu, aby go użyć jako zamiennika **Styled Components**). 
+Frontend został wykonany przy użyciu **React** oraz stylizowany za pomocą **TailwindCSS** (niedawno framework ten przykuł moje oko i od tego czasu poszukiwałem pretekstu, aby go użyć jako zamiennika **Styled Components**). 
 
 Ze względu na brak znajomości odpowiednika biblioteki **Spring Boot** dla **C# / .NET** wykonany został tylko szkielet aplikacji frontendowej - endpointy **REST** zastąpiono funkcjami generującymi proste dane.
 
