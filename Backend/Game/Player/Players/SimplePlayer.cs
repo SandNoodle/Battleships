@@ -1,6 +1,12 @@
 using System;
 using System.Collections.Generic;
 
+/**
+	<summary>
+		<c>SimplePlayer</c> - fires cells without repetition at random.
+		Checks neighbouring cells (top, down, left, right) when hit status equals to HIT or SUNK.
+	</summary>
+*/
 public class SimplePlayer : IPlayer
 {
 	private Random _random;
@@ -53,7 +59,7 @@ public class SimplePlayer : IPlayer
 		_firingBoard.BoardCells[shotLocation.X, shotLocation.Y] = shotResult;
 
 		// Add horizontal and vertical neighbours to priority list
-		if (shotResult == CellStatus.Hit)
+		if (shotResult == CellStatus.Hit || shotResult == CellStatus.Sunk)
 		{
 			AddToPriorityListIfValid(shotLocation.X + 1, shotLocation.Y);
 			AddToPriorityListIfValid(shotLocation.X - 1, shotLocation.Y);

@@ -1,6 +1,11 @@
 using System;
 using System.Collections.Generic;
 
+/**
+	<summary>
+		<c>RandomWithoutRepetitionPlayer</c> selects random cell to fire - does not repeat checked cells.
+	</summary>
+*/
 public class RandomWithoutRepetitionPlayer : IPlayer
 {
 	private Random _random;

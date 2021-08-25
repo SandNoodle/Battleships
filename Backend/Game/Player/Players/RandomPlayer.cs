@@ -1,6 +1,11 @@
 using System;
 using System.Collections.Generic;
 
+/**
+	<summary>
+		<c>RandomPlayer</c> selects random cell to fire - even previously checked.
+	</summary>
+*/
 public class RandomPlayer : IPlayer
 {
 	private Random random;
